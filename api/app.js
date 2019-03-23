@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const courses = require('./routes/courses');
 const users = require('./routes/users');
 const mongoose = require('mongoose');
+var cors = require('cors')
+
 mongoose.set('debug', true);
 
 
@@ -15,6 +17,9 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 
 // create the Express app
 const app = express();
+
+//Use middleware for CORS
+app.use(cors())
 
 // support parsing of application/json type post data
 app.use(bodyParser.json());
