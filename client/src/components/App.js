@@ -5,19 +5,21 @@ import {
 } from 'react-router-dom';
 import Courses from './Courses';
 import Header from './Header';
+import UserSignIn from './UserSignIn';
+import UserSignUp from './UserSignUp';
 import CourseDetail from './CourseDetail';
 
 
 class App extends Component {
-
-
   render() {
     return ( 
       <div>
-        <Header />
         <BrowserRouter>
+          <Header />
           <Route path="/" exact component={Courses} />
           <Route path="/courses/:id" component={CourseDetail} />
+          <Route path="/signin" component={UserSignIn} />
+          <Route path="/signup" component={UserSignUp} />
         </BrowserRouter>
       </div>
     );
