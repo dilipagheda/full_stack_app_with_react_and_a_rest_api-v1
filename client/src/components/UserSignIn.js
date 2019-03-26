@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {signIn,signOut}  from '../actions';
 import { connect } from 'react-redux'
-const token = require('basic-auth-token');
-const axios = require('axios');
+import signInUser from '../common/signInUser';
 
 class UserSignIn extends Component {
 
@@ -26,25 +25,15 @@ class UserSignIn extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const authToken=token(this.state.username,this.state.password);
-        //make a call here to sign in
-        axios({
-            url:'http://localhost:5000/api/users',
-            method:'get',
-            headers:{
-                Authorization:`Basic ${authToken}`
-            }
-        })
-        .then( response=> {
-          // handle success
-          console.log(response.data);
-          this.props.signIn({...response.data,token:authToken});
-        })
-        .catch( (error) =>{
-          // handle error
-          this.props.signOut();
-          console.log(error);
-        })
+        signInUser(this.state.username, this.state.password, (response,authToken)=>{
+            console.log(response.data);
+            this.props.signIn({...response.data,token:authToken});
+        }, (error)=>{
+            console.log(error);
+            this.props.signOut();
+        },()=>{
+            this.props.history.push("/"); 
+        });
     }
 
     render(){
