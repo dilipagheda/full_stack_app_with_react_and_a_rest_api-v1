@@ -12,6 +12,7 @@ import UserSignOut from './UserSignOut';
 import CourseDetail from './CourseDetail';
 import CreateCourse from './CreateCourse';
 import PrivateRoute from '../HOC/PrivateRoute';
+import UpdateCourse from './UpdateCourse';
 
 class App extends Component {
   render() {
@@ -22,8 +23,10 @@ class App extends Component {
           <Route path="/" exact component={Courses} />
           <Switch>
             <PrivateRoute path="/courses/create" exact component={CreateCourse} />
+            <Route path="/courses/:id/update" exact component={UpdateCourse} />
             <Route path="/courses/:id"  component={CourseDetail} />
           </Switch>
+          
           <Route path="/signin" component={UserSignIn} />
           <Route path="/signup" component={UserSignUp} />
           <Route path="/signout" component={UserSignOut} />
