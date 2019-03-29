@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+const ReactMarkdown = require('react-markdown');
 
 const axios = require('axios');
 
@@ -7,7 +9,7 @@ class CourseDetail extends Component {
   state = {course:null};
 
   componentDidMount() {
-    console.log(this.props);
+    //console.log(this.props);
     axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
       .then( response=> {
         // handle success
@@ -25,26 +27,18 @@ class CourseDetail extends Component {
 
   generateCourseDescription(desc){
      if(!desc)return null;
-     let descLines = desc.split("\n\n");
-     return descLines.map(descLine=>{
-         return <p>{descLine}</p>;
-     })
+     
+     return <ReactMarkdown source={desc} />;
   }
 
   generateMaterials(materialsNeeded){
       if(!materialsNeeded)return null;
-      let materials = materialsNeeded.split("\n");
+      
       return (
         <li className="course--stats--list--item">
         <h4>Materials Needed</h4>
         <ul>
-            {materials.map(material=>{
-                if(material.length>0){
-                    return <li>{material.trim().replace('* ','')}</li>;
-                }else{
-                    return null;
-                }
-            })}
+          <ReactMarkdown source={this.state.course.materialsNeeded} />
         </ul>
       </li>  
     );
@@ -63,6 +57,21 @@ class CourseDetail extends Component {
   renderCourseDetail(){
       if(this.state.course){
         return (
+          <div>
+            <div className="actions--bar">
+            <div className="bounds">
+              <div className="grid-100">
+                <span>
+                  <Link className="button" to={{pathname:`/courses/${this.state.course._id}/update`,
+                                                state:{
+                                                  course:this.state.course
+                                                }}}>Update Course</Link>
+                  <Link className="button" href="#">Delete Course</Link>
+                </span>
+                <Link className="button button-secondary" to="/">Return to List</Link>
+              </div>
+            </div>
+            </div>
             <div className="bounds course--detail">
             <div className="grid-66">
               <div className="course--header">
@@ -79,10 +88,12 @@ class CourseDetail extends Component {
                 <ul className="course--stats--list">
                   {this.generateEstimatedTime(this.state.course.estimatedTime)}
                   {this.generateMaterials(this.state.course.materialsNeeded)}
+                  
                 </ul>
               </div>
             </div>
           </div>
+        </div>
         );
       }else{
           return null;
