@@ -2,7 +2,7 @@
 const axios = require('axios');
 const token = require('basic-auth-token');
 
-function signInUser(username,password,cb1,cb2,cb3){
+function signInUser(username,password,cb1,cb2){
     const authToken=token(username,password);
     //make a call here to sign in
     axios({
@@ -17,6 +17,7 @@ function signInUser(username,password,cb1,cb2,cb3){
       //console.log(response.data);
       //this.props.signIn({...response.data,token:authToken});
       cb1(response,authToken);
+      
     })
     .catch( (error) =>{
       // handle error
@@ -24,11 +25,7 @@ function signInUser(username,password,cb1,cb2,cb3){
       //console.log(error);
       cb2(error);
     })
-    .then( () =>{
-        // always executed
-       //this.props.history.push("/");
-       cb3();
-      });  
+ 
 }
 
 export default signInUser

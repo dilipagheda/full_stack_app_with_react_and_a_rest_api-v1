@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import {signIn,signOut}  from '../actions';
 import { connect } from 'react-redux'
 import signInUser from '../common/signInUser';
+import ValidationErrors from './ValidationErrors';
 
 class UserSignIn extends Component {
 
     state = {
         username:'joe@smith.com',
-        password:'joepassword'
+        password:'joepassword',
     };
 
     handleUserNameChange = (event) => {
@@ -27,25 +28,28 @@ class UserSignIn extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        signInUser(this.state.username, this.state.password, (response,authToken)=>{
-            console.log(response.data);
+        signInUser(this.state.username, this.state.password, 
+          (response,authToken)=>{
             this.props.signIn({...response.data,token:authToken});
+            if(this.props && this.props.location && this.props.location.state &&this.props.location.state.from){
+              this.props.history.push(this.props.location.state.from)
+            }else{
+              this.props.history.push("/");
+            }
         }, (error)=>{
-            console.log(error);
-            this.props.signOut();
-        },()=>{
-          if(this.props && this.props.location && this.props.location.state &&this.props.location.state.from){
-            this.props.history.push(this.props.location.state.from)
-          }else{
-            this.props.history.push("/");
-          }
-             
+            console.log(error.response.status);
+            this.setState({status:error.response.status});
         });
     }
 
     render(){
+        const errors=[];
+        if(this.state.status && this.state.status===401){
+          errors.push("Invalid Credentials. Try again!");
+        }
         return (
             <div className="bounds">
+            <ValidationErrors errors={errors} />
             <div className="grid-33 centered signin">
               <h1>Sign In</h1>
               <div>
