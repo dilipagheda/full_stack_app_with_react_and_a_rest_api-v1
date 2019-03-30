@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import { connect } from 'react-redux'
+
 const ReactMarkdown = require('react-markdown');
 
 const axios = require('axios');
@@ -24,6 +26,30 @@ class CourseDetail extends Component {
         // always executed
       });
   }
+
+  handleDelete = ()=>{
+    if(!this.props || !this.props.user ||!this.props.user.token)return;
+    axios({
+      url:`http://localhost:5000/api/courses/${this.state.course._id}`,
+      method:'delete',
+      headers:{
+          Authorization:`Basic ${this.props.user.token}`
+      }
+    })
+    .then( response=> {
+      // handle success
+      console.log(response.data);
+      this.setState({course:response.data});
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
 
   generateCourseDescription(desc){
      if(!desc)return null;
@@ -66,7 +92,7 @@ class CourseDetail extends Component {
                                                 state:{
                                                   course:this.state.course
                                                 }}}>Update Course</Link>
-                  <Link className="button" href="#">Delete Course</Link>
+                  <button className="button" onClick={this.handleDelete} >Delete Course</button>
                 </span>
                 <Link className="button button-secondary" to="/">Return to List</Link>
               </div>
@@ -107,4 +133,8 @@ class CourseDetail extends Component {
   }
 }
 
-export default CourseDetail;
+const mapStateToProps = state => {
+  return {user:state.userAuth.user}
+}
+
+export default connect(mapStateToProps)(CourseDetail)
