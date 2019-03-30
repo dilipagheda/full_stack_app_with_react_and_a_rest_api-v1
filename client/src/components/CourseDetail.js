@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import ActionBar from '../common/ActionBar';
 
@@ -8,25 +9,46 @@ const axios = require('axios');
 
 class CourseDetail extends Component {
 
-  state = {course:null};
+  state = {course:null,
+            error:{} 
+          };
 
   componentDidMount() {
     //console.log(this.props);
     axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
       .then( response=> {
         // handle success
-        console.log(response.data);
         this.setState({course:response.data});
       })
-      .catch(function (error) {
+      .catch( (error) => {
         // handle error
-        console.log(error);
+        if(error.response.status){
+          this.setState({error:{
+            status:error.response.status,
+            message:error.response.data.message
+          }});
+        }
       })
       .then(function () {
         // always executed
       });
   }
 
+  redirectToError = () => {
+    switch(this.state.error.status){
+      case 404:
+        return <Redirect to="/notfound" />
+      case 500:
+        return (<Redirect to={{
+          pathname: "/error" ,
+          state: {
+            message:this.state.error.message
+          }
+        }}/>);
+      default:
+        return null;
+    }
+  }
   generateCourseDescription(desc){
      if(!desc)return null;
      
@@ -94,9 +116,11 @@ class CourseDetail extends Component {
   }
 
   render() {
-    return (
-            this.renderCourseDetail()
-        );
+    if(this.state.error.status){
+      return this.redirectToError();
+    }else{
+      return this.renderCourseDetail()
+    }
   }
 }
 

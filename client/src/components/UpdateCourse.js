@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {getAuthor} from '../common/utility'
 import { connect } from 'react-redux'
+import {Redirect} from 'react-router-dom';
 
 const axios = require('axios');
 
@@ -14,10 +15,12 @@ class UpdateCourse extends Component {
             estimatedTime:'',
             materialsNeeded:''
         },
-        errors:[]
+        errors:[],
+        serverError:{}
     }
 
     componentDidMount() {
+
       if(this.props.location.state){
         this.setState({course:this.props.location.state.course})
       }else{
@@ -25,11 +28,20 @@ class UpdateCourse extends Component {
         .then( response=> {
           // handle success
           console.log(response.data);
+          //Check if the user owns the course
+          if(response.data.user._id!==this.props.user._id){
+              this.props.history.push("/forbidden");
+          }
           this.setState({course:response.data});
         })
-        .catch(function (error) {
+        .catch((error) =>{
           // handle error
-          console.log(error);
+          if(error.response.status){
+            this.setState({serverError:{
+              status:error.response.status,
+              message:error.response.data.message
+            }});
+          }
         })
         .then(function () {
           // always executed
@@ -111,8 +123,28 @@ class UpdateCourse extends Component {
         this.props.history.push(`/courses/${this.state.course._id}`);
     }
 
-    render(){
+    redirectToError = () => {
+      switch(this.state.serverError.status){
+        case 404:
+          return <Redirect to="/notfound" />
+        case 401:
+          return <Redirect to="/forbidden" />
+        case 500:
+          return (<Redirect to={{
+            pathname: "/error" ,
+            state: {
+              message:this.state.serverError.message
+            }
+          }}/>);
+        default:
+          return null;
+      }
+    }
 
+    render(){
+        if(this.state.serverError.status){
+          return this.redirectToError();
+        }
         return (<div>
             <div className="bounds course--detail">
               <h1>Update Course</h1>

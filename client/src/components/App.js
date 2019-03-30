@@ -15,6 +15,8 @@ import CreateCourse from './CreateCourse';
 import PrivateRoute from '../HOC/PrivateRoute';
 import UpdateCourse from './UpdateCourse';
 import NotFound from './NotFound';
+import Forbidden from './Forbidden';
+import ServerError from './ServerError';
 
 class App extends Component {
   render() {
@@ -31,6 +33,8 @@ class App extends Component {
             <Route path="/signup" exact component={UserSignUp} />
             <Route path="/signout" exact component={UserSignOut} />
             <Route path="/notfound" exact component={NotFound} />
+            <Route path="/forbidden" exact component={Forbidden} />
+            <Route path="/error" exact component={ServerError} />
             <Redirect to="/notfound"  />
           </Switch>
         </BrowserRouter>
