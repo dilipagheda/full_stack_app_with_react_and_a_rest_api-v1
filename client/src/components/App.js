@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
   BrowserRouter,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 import {Switch} from 'react-router';
 import Courses from './Courses';
@@ -13,6 +14,7 @@ import CourseDetail from './CourseDetail';
 import CreateCourse from './CreateCourse';
 import PrivateRoute from '../HOC/PrivateRoute';
 import UpdateCourse from './UpdateCourse';
+import NotFound from './NotFound';
 
 class App extends Component {
   render() {
@@ -20,16 +22,17 @@ class App extends Component {
       <div>
         <BrowserRouter>
           <Header />
-          <Route path="/" exact component={Courses} />
           <Switch>
+            <Route path="/" exact component={Courses} />
             <PrivateRoute path="/courses/create" exact component={CreateCourse} />
             <PrivateRoute path="/courses/:id/update" exact component={UpdateCourse} />
-            <Route path="/courses/:id"  component={CourseDetail} />
+            <Route path="/courses/:id" exact component={CourseDetail} />
+            <Route path="/signin" exact component={UserSignIn} />
+            <Route path="/signup" exact component={UserSignUp} />
+            <Route path="/signout" exact component={UserSignOut} />
+            <Route path="/notfound" exact component={NotFound} />
+            <Redirect to="/notfound"  />
           </Switch>
-          
-          <Route path="/signin" component={UserSignIn} />
-          <Route path="/signup" component={UserSignUp} />
-          <Route path="/signout" component={UserSignOut} />
         </BrowserRouter>
       </div>
     );
