@@ -11,13 +11,11 @@ class UserSignIn extends Component {
     };
 
     handleUserNameChange = (event) => {
-        const value = event.target.value;
-        this.setState({username: value});
+        this.setState({username: event.target.value});
     }
 
     handlePasswordChange = (event) => {
-        const value = event.target.value;
-        this.setState({password: value});
+        this.setState({password: event.target.value});
     }
 
     onCancel = (event)=>{
