@@ -14,7 +14,7 @@ const isSignedIn = () =>{
     return isSignedIn;
 }
 const PrivateRoute = ({ component: Component, ...rest }) => {
-    return   <Route {...rest} render={(props)=>(isSignedIn()?<Component />:<Redirect to={{pathname:"/signin",state: { from: props.location }}} />)} />
+    return   <Route {...rest} render={(props)=>(isSignedIn()?<Component {...props}/>:<Redirect to={{pathname:"/signin",state: { from: props.location }}} />)} />
 }
 
 export default PrivateRoute
