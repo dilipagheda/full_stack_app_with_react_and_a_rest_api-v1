@@ -29,6 +29,10 @@ router.get('/:id', function (req, res, next) {
         })
         .exec(function (err, courses) {
             if(err) return next(err);
+            if(!courses){
+                res.status(404).end();
+                return;
+            }
             res.json(courses);
         });
 });
