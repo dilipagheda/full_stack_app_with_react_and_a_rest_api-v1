@@ -34,7 +34,7 @@ class UserSignIn extends Component {
             console.log(error);
             this.props.signOut();
         },()=>{
-          if(this.props.location.state.from){
+          if(this.props && this.props.location && this.props.location.state &&this.props.location.state.from){
             this.props.history.push(this.props.location.state.from)
           }else{
             this.props.history.push("/");
