@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import { connect } from 'react-redux'
 import ActionBar from '../common/ActionBar';
 
@@ -27,30 +26,6 @@ class CourseDetail extends Component {
         // always executed
       });
   }
-
-  handleDelete = ()=>{
-    if(!this.props || !this.props.user ||!this.props.user.token)return;
-    axios({
-      url:`http://localhost:5000/api/courses/${this.state.course._id}`,
-      method:'delete',
-      headers:{
-          Authorization:`Basic ${this.props.user.token}`
-      }
-    })
-    .then( response=> {
-      // handle success
-      console.log(response.data);
-      this.setState({course:response.data});
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });
-  }
-
 
   generateCourseDescription(desc){
      if(!desc)return null;
@@ -81,11 +56,15 @@ class CourseDetail extends Component {
       );
   }
 
+  redirectToHome = ()=>{
+    this.props.history.push("/");
+  }
+
   renderCourseDetail(){
       if(this.state.course){
         return (
           <div>
-            <ActionBar user={this.props.user} course={this.state.course}/>
+            <ActionBar course={this.state.course} redirectToHome={this.redirectToHome}/>
             <div className="bounds course--detail">
             <div className="grid-66">
               <div className="course--header">
