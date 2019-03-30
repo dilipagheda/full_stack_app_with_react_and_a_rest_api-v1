@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux'
+import ActionBar from '../common/ActionBar';
 
 const ReactMarkdown = require('react-markdown');
 
@@ -84,20 +85,7 @@ class CourseDetail extends Component {
       if(this.state.course){
         return (
           <div>
-            <div className="actions--bar">
-            <div className="bounds">
-              <div className="grid-100">
-                <span>
-                  <Link className="button" to={{pathname:`/courses/${this.state.course._id}/update`,
-                                                state:{
-                                                  course:this.state.course
-                                                }}}>Update Course</Link>
-                  <button className="button" onClick={this.handleDelete} >Delete Course</button>
-                </span>
-                <Link className="button button-secondary" to="/">Return to List</Link>
-              </div>
-            </div>
-            </div>
+            <ActionBar user={this.props.user} course={this.state.course}/>
             <div className="bounds course--detail">
             <div className="grid-66">
               <div className="course--header">
