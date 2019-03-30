@@ -76,7 +76,9 @@ class CreateCourse extends Component {
             data:{
                 "title":this.state.course.title,
                 "description":this.state.course.description,
-                "user":this.props.user._id
+                "user":this.props.user._id,
+                "materialsNeeded": this.state.course.materialsNeeded,
+                "estimatedTime":this.state.course.estimatedTime
             },
             headers:{
                 Authorization:`Basic ${this.props.user.token}`
