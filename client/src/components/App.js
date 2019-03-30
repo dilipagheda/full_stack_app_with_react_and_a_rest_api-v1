@@ -23,7 +23,7 @@ class App extends Component {
           <Route path="/" exact component={Courses} />
           <Switch>
             <PrivateRoute path="/courses/create" exact component={CreateCourse} />
-            <Route path="/courses/:id/update" exact component={UpdateCourse} />
+            <PrivateRoute path="/courses/:id/update" exact component={UpdateCourse} />
             <Route path="/courses/:id"  component={CourseDetail} />
           </Switch>
           

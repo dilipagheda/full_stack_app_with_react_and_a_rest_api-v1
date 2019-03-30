@@ -72,13 +72,7 @@ router.put('/:id', authenticateUser, function (req, res, next) {
         if (err) {
             next(err);
         } else {
-            if (result.nModified > 0) {
-                res.status(204).end();
-            } else {
-                res.status(403).json({
-                    message: 'Course not found for this user!',
-                });
-            }
+            res.status(204).end();
         }
     });
 });
