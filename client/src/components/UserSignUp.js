@@ -8,11 +8,11 @@ const axios = require('axios');
 class UserSignUp extends Component {
 
     state = {
-      firstName:"Diip",
-      lastName:"Agheda",
-      emailAddress:"dilip_agheda@yahoo.com",
-      password:"a",
-      confirmPassword:"a",
+      firstName:"",
+      lastName:"",
+      emailAddress:"",
+      password:"",
+      confirmPassword:"",
       errors:[]
     };
 
