@@ -75,7 +75,6 @@ class UserSignUp extends Component {
       })
       .then( response=> {
         // handle success
-        console.log(response.data);
         //Sign in user
         signInUser(this.state.emailAddress, this.state.password, (response,authToken)=>{
             this.props.signIn({...response.data,token:authToken});

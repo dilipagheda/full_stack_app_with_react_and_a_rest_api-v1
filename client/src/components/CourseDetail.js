@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import ActionBar from '../common/ActionBar';
+import RedirectToError from './RedirectToError';
 
 const ReactMarkdown = require('react-markdown');
 
@@ -34,21 +35,6 @@ class CourseDetail extends Component {
       });
   }
 
-  redirectToError = () => {
-    switch(this.state.error.status){
-      case 404:
-        return <Redirect to="/notfound" />
-      case 500:
-        return (<Redirect to={{
-          pathname: "/error" ,
-          state: {
-            message:this.state.error.message
-          }
-        }}/>);
-      default:
-        return null;
-    }
-  }
   generateCourseDescription(desc){
      if(!desc)return null;
      
@@ -117,7 +103,7 @@ class CourseDetail extends Component {
 
   render() {
     if(this.state.error.status){
-      return this.redirectToError();
+      return <RedirectToError error={this.state.error} />
     }else{
       return this.renderCourseDetail()
     }

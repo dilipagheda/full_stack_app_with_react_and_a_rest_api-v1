@@ -123,27 +123,9 @@ class UpdateCourse extends Component {
         this.props.history.push(`/courses/${this.state.course._id}`);
     }
 
-    redirectToError = () => {
-      switch(this.state.serverError.status){
-        case 404:
-          return <Redirect to="/notfound" />
-        case 401:
-          return <Redirect to="/forbidden" />
-        case 500:
-          return (<Redirect to={{
-            pathname: "/error" ,
-            state: {
-              message:this.state.serverError.message
-            }
-          }}/>);
-        default:
-          return null;
-      }
-    }
-
     render(){
         if(this.state.serverError.status){
-          return this.redirectToError();
+          return <Redirect error={this.state.serverError} />
         }
         return (<div>
             <div className="bounds course--detail">

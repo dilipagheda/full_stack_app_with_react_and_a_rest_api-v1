@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ServerError = (props) => {
+const UnhandledError = (props) => {
     return (
         <div className="bounds">
         <h1>Internal Server Error</h1>
@@ -9,5 +9,5 @@ const ServerError = (props) => {
     );
 }
 
-export default ServerError
+export default UnhandledError
 
