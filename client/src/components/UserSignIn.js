@@ -7,8 +7,8 @@ import ValidationErrors from './ValidationErrors';
 class UserSignIn extends Component {
 
     state = {
-        username:'joe@smith.com',
-        password:'joepassword',
+        username:'',
+        password:'',
     };
 
     handleUserNameChange = (event) => {
