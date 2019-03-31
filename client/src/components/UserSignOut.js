@@ -8,7 +8,11 @@ const UserSignOut = (props) =>{
 }
 
 const mapDispatchToProps = dispatch => ({
-    signOut:()=> dispatch(signOut())
+    signOut:()=> {
+      //clear local storage here
+      window.localStorage.removeItem("state");
+      dispatch(signOut());
+    }
   })
 
 export default connect(

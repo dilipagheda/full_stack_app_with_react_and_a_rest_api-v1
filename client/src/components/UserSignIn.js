@@ -31,14 +31,20 @@ class UserSignIn extends Component {
         signInUser(this.state.username, this.state.password, 
           (response,authToken)=>{
             this.props.signIn({...response.data,token:authToken});
+            //save authToken to local storage
+            window.localStorage.setItem("state",JSON.stringify(this.props.state));
             if(this.props && this.props.location && this.props.location.state &&this.props.location.state.from){
               this.props.history.push(this.props.location.state.from)
             }else{
               this.props.history.push("/");
             }
         }, (error)=>{
-            console.log(error.response.status);
+          if(error.response && error.response.status){
             this.setState({status:error.response.status});
+          }else{
+            this.setState({status:500});
+          }
+            
         });
     }
 
@@ -79,7 +85,11 @@ const mapDispatchToProps = dispatch => ({
     signOut:()=> dispatch(signOut())
   })
 
+const mapStateToProps = state => {
+    return {state:state.userAuth};
+}
+  
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(UserSignIn)
