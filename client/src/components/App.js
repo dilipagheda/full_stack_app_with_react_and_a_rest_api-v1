@@ -23,7 +23,7 @@ class App extends Component {
     return ( 
       <div>
         <BrowserRouter>
-          <Header />
+          <Route path="*" component={Header} />
           <Switch>
             <Route path="/" exact component={Courses} />
             <PrivateRoute path="/courses/create" exact component={CreateCourse} />
