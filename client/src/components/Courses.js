@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link,Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import RedirectToError from './RedirectToError';
 
 const axios = require('axios');
@@ -14,7 +14,6 @@ class Courses extends Component {
     axios.get('http://localhost:5000/api/courses')
       .then( response=> {
         // handle success
-        console.log(response.data);
         this.setState({courses:response.data});
       })
       .catch( (error) => {

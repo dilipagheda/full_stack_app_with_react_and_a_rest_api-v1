@@ -27,7 +27,6 @@ class UpdateCourse extends Component {
         axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
         .then( response=> {
           // handle success
-          console.log(response.data);
           //Check if the user owns the course
           if(response.data.user._id!==this.props.user._id){
               this.props.history.push("/forbidden");
@@ -76,7 +75,6 @@ class UpdateCourse extends Component {
     }
 
     handleSubmit = (event)=>{
-        alert("submit");
         event.preventDefault();
 
         //Check for errors
@@ -109,7 +107,6 @@ class UpdateCourse extends Component {
         })
         .then( response=> {
             // handle success
-            alert("success!");
             this.props.history.push("/");
         })
         .catch( (error) =>{

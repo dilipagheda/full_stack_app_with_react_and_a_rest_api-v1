@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import ActionBar from '../common/ActionBar';
 import RedirectToError from './RedirectToError';
