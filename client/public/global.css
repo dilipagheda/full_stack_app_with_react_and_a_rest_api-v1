@@ -219,6 +219,10 @@ body {
   margin: 0;
   display: inline-block;
 }
+
+.header--logo:hover {
+  cursor: pointer;
+}
 /* line 23, ../sass/global.sass */
 .header--logo a {
   color: rgba(255, 255, 255, 0.5);
