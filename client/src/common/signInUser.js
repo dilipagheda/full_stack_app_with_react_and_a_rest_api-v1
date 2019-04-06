@@ -17,7 +17,6 @@ function signInUser(username,password,cb1,cb2){
       //console.log(response.data);
       //this.props.signIn({...response.data,token:authToken});
       cb1(response,authToken);
-      
     })
     .catch( (error) =>{
       // handle error
@@ -25,7 +24,7 @@ function signInUser(username,password,cb1,cb2){
       //console.log(error);
       cb2(error);
     })
- 
+
 }
 
 export default signInUser

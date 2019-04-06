@@ -10,7 +10,7 @@ const RedirectToError = (props) => {
         return (<Redirect to={{
           pathname: "/error" ,
           state: {
-            message:this.state.error.message
+            message:props.error.message
           }
         }}/>);
       default:

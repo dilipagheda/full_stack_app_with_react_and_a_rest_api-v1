@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import signInUser from '../common/signInUser';
 import {signIn,signOut}  from '../actions';
 import { connect } from 'react-redux'
+import RedirectToError from './RedirectToError';
 
 const axios = require('axios');
 
@@ -78,16 +79,25 @@ class UserSignUp extends Component {
         //Sign in user
         signInUser(this.state.emailAddress, this.state.password, (response,authToken)=>{
             this.props.signIn({...response.data,token:authToken});
+            this.props.history.push("/"); 
           }, (error)=>{
               this.props.signOut();
-          },()=>{
-              this.props.history.push("/"); 
           });
       })
       .catch( (error) =>{
         // handle error
         this.props.signOut();
-        this.setState({errors:[error.response.data.message]});
+        if(error && error.response && error.response.data && error.response.data.message)
+        {
+          if(error.response.data.message.constructor === Array){
+            const errors = error.response.data.message.map((item)=>item.msg);
+            this.setState({status:undefined,errors});
+          }else{
+            this.setState({status:undefined,errors:[error.response.data.message]});
+          }
+        }else{
+          this.setState({status:500});
+        }
       }) 
   }
 
@@ -106,43 +116,47 @@ class UserSignUp extends Component {
     );
   }
 
-    render(){
+  render(){
+      if(this.state.status){
+        return <RedirectToError error={this.state.error} />
+      }else{
         return (
-            <div className="bounds">
-            <div className="grid-33 centered signin">
-              <h1>Sign Up</h1>
-              <div>
-                {this.showErrors()}
-                <form onSubmit={this.handleSubmit}>
-                  <div>
-                      <input value={this.state.firstName} onChange={this.handleFirstNameChange} id="firstName" name="firstName" type="text" className="" placeholder="First Name"  required/>
-                  </div>
-                  <div>
-                      <input value={this.state.lastName} onChange={this.handleLastNameChange} id="lastName" name="lastName" type="text" className="" placeholder="Last Name" required />
-                   </div>
-                  <div>
-                      <input value={this.state.emailAddress} onChange={this.handleEmailAddressChange}  id="emailAddress" name="emailAddress" type="email" className="" placeholder="Email Address"  />
-                   </div>
-                  <div>
-                      <input value={this.state.password} onChange={this.handlePasswordChange} id="password" name="password" type="password" className="" placeholder="Password" required />
-                   </div>
-                  <div>
-                      <input value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange}  id="confirmPassword" name="confirmPassword" type="password" className="" placeholder="Confirm Password" required
-                       />
-                  </div>
-                  <div className="grid-100 pad-bottom">
-                    <button className="button" type="submit">Sign Up</button>
-                    <button className="button button-secondary" onClick={this.onCancel}>Cancel</button>
-                   </div>
-                </form>
-              </div>
-              <p>&nbsp;</p>
-              <p>Already have a user account? <a href="sign-in.html">Click here</a> to sign in!</p>
+          <div className="bounds">
+          <div className="grid-33 centered signin">
+            <h1>Sign Up</h1>
+            <div>
+              {this.showErrors()}
+              <form onSubmit={this.handleSubmit}>
+                <div>
+                    <input value={this.state.firstName} onChange={this.handleFirstNameChange} id="firstName" name="firstName" type="text" className="" placeholder="First Name"  />
+                </div>
+                <div>
+                    <input value={this.state.lastName} onChange={this.handleLastNameChange} id="lastName" name="lastName" type="text" className="" placeholder="Last Name"  />
+                 </div>
+                <div>
+                    <input value={this.state.emailAddress} onChange={this.handleEmailAddressChange}  id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address"  />
+                 </div>
+                <div>
+                    <input value={this.state.password} onChange={this.handlePasswordChange} id="password" name="password" type="password" className="" placeholder="Password"  />
+                 </div>
+                <div>
+                    <input value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange}  id="confirmPassword" name="confirmPassword" type="password" className="" placeholder="Confirm Password" 
+                     />
+                </div>
+                <div className="grid-100 pad-bottom">
+                  <button className="button" type="submit">Sign Up</button>
+                  <button className="button button-secondary" onClick={this.onCancel}>Cancel</button>
+                 </div>
+              </form>
             </div>
+            <p>&nbsp;</p>
+            <p>Already have a user account? <a href="sign-in.html">Click here</a> to sign in!</p>
           </div>
-        );
-
+        </div>
+ 
+      );
     }
+  }
 }
 
 const mapDispatchToProps = dispatch => ({

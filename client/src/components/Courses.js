@@ -18,10 +18,15 @@ class Courses extends Component {
       })
       .catch( (error) => {
         // handle error
-        if(error.response.status){
+        if(error && error.response && error.response.status){
           this.setState({error:{
             status:error.response.status,
             message:error.response.data.message
+          }});
+        }else{
+          this.setState({error:{
+            status:500,
+            message:'Network error! Please check if backend is running!'
           }});
         }
       })

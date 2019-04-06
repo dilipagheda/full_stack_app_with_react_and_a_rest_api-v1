@@ -4,7 +4,7 @@ var router = express.Router();
 const User = require('../models/user');
 const bcryptjs = require('bcryptjs');
 const {authenticateUser,checkDuplicateEmail} = require('../middleware/index');
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult,body } = require('express-validator/check');
 
 /* GET /api/users 200 - Returns the currently authenticated user
  */
@@ -16,11 +16,20 @@ router.get('/', authenticateUser, function(req, res, next) {
               Email should not have been used.
  Hash the password before storing
 */
-router.post('/' , check('emailAddress').isEmail().withMessage("Email address is not valid!") , checkDuplicateEmail  , function(req, res, next) {
+router.post('/' ,
+                check('firstName').exists({checkFalsy:true}).withMessage("First Name can not be empty!") ,
+                check('lastName').exists({checkFalsy:true}).withMessage("Last Name can not be empty!") ,
+                check('password').exists({checkFalsy:true}).withMessage("Password can not be empty!") ,
+                check('confirmPassword').exists({checkFalsy:true}).withMessage("Confirm Password can not be empty!") ,
+                check('emailAddress').exists({checkFalsy:true}).withMessage("Email address can not be empty!") ,
+                check('emailAddress').isEmail().withMessage("Email address is not valid!"),
+                checkDuplicateEmail , 
+function(req, res, next) {
 
     //Email format validation
     const err = validationResult(req);
     if (!err.isEmpty()) {
+        console.log("my errors:");
         console.log(JSON.stringify(err.array()));
         let e = new Error();
         e.message = err.array();
