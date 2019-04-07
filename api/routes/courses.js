@@ -66,6 +66,17 @@ router.post('/', authenticateUser, function (req, res, next) {
 
 /* PUT /api/courses/:id 204 - Updates a course and returns no content */
 router.put('/:id', authenticateUser, function (req, res, next) {
+
+    //First see if course exists
+    Course.findById(req.params.id)
+        .exec(function (err, courses) {
+            if(err) return next(err);
+            if(!courses){
+                res.status(404).end();
+                return;
+            }
+        });
+
     const data = {
         title: req.body.title,
         description: req.body.description,

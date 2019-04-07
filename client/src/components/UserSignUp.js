@@ -79,6 +79,8 @@ class UserSignUp extends Component {
         //Sign in user
         signInUser(this.state.emailAddress, this.state.password, (response,authToken)=>{
             this.props.signIn({...response.data,token:authToken});
+            //save authToken to local storage
+            window.localStorage.setItem("state",JSON.stringify(this.props.state));
             this.props.history.push("/"); 
           }, (error)=>{
               this.props.signOut();
@@ -164,7 +166,11 @@ const mapDispatchToProps = dispatch => ({
   signOut:()=> dispatch(signOut())
 })
 
+const mapStateToProps = state => {
+  return {state:state.userAuth};
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(UserSignUp)

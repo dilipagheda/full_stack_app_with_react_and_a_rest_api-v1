@@ -17,7 +17,6 @@ const setInitial = () => {
   }
   return state;
 }
-
 const INITIAL = setInitial();
 
 const userAuth = (state = INITIAL, action) => {

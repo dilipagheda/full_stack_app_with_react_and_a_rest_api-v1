@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {getAuthor} from '../common/utility'
 import { connect } from 'react-redux'
-import {Redirect} from 'react-router-dom';
+import RedirectToError from './RedirectToError';
 
 const axios = require('axios');
 
@@ -111,7 +111,12 @@ class UpdateCourse extends Component {
         })
         .catch( (error) =>{
             // handle error
-            this.setState((prevState)=>{return {errors:[...prevState.errors,'Sorry, Something went wrong!']}});
+            console.log(error.response);
+            let status=500;
+            if(error.response.status){
+              status=error.response.status;
+            }
+            this.setState({serverError:{status}});
         }) 
     }
 
@@ -121,8 +126,9 @@ class UpdateCourse extends Component {
     }
 
     render(){
+      console.log(this.state.serverError.status);
         if(this.state.serverError.status){
-          return <Redirect error={this.state.serverError} />
+          return <RedirectToError error={this.state.serverError} />
         }
         return (<div>
             <div className="bounds course--detail">

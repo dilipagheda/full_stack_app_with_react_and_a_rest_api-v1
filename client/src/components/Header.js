@@ -7,7 +7,7 @@ class  Header extends Component {
   withSignIn = (username) => {
     return (
       <div className="bounds">
-      <h1 className="header--logo">Courses</h1>
+      <h1 className="header--logo" onClick={this.handleLogoOnClick}>Courses</h1>
       <nav>
         <span>Welcome {username}!</span>
         <Link className="signout" to="/signout">Sign Out</Link>
@@ -29,6 +29,7 @@ class  Header extends Component {
   }
 
   handleLogoOnClick = () =>{
+    console.log("historypush");
     this.props.history.push("/");
   }
   
