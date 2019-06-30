@@ -13,6 +13,7 @@ In addition, the project will require users to create an account and sign in to 
 * Node.js , Express and MongoDB for API layer
 
 ## How to run the project locally
+Make sure that your mongodb database is running. It not, run `mongod` in your /bin directory of mondo db installation.
 ### Setup API project
 * Go to the `/api` directory
 * Run `npm install`
